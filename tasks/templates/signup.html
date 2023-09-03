@@ -1,5 +1,10 @@
 <h1>Sign up</h1>
 
+<b style='font-weight: bold; color: red;'>{{ error }}</b>
+
+<br>
+<br>
+
 <form action="/signup/" method='post'>
   {% csrf_token %}
   {{ form.as_div }}
