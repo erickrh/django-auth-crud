@@ -3,6 +3,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.contrib.auth import login
 from django.db import IntegrityError
+from django.http import HttpResponse
 
 # Create your views here.
 def home(request):
@@ -35,3 +36,6 @@ def signup(request):
 
 def tasks(request):
   return render(request, 'tasks.html')
+
+def logout(request):
+  return HttpResponse('Logout')

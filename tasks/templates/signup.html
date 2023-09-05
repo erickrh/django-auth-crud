@@ -1,3 +1,6 @@
+{% extends 'base.html' %}
+
+{% block content %}
 <h1>Sign up</h1>
 
 <b style='font-weight: bold; color: red;'>{{ error }}</b>
@@ -10,3 +13,4 @@
   {{ form.as_div }}
   <button type="submit">Sign up</button>
 </form>
+{% endblock %}
