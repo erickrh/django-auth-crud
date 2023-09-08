@@ -3,6 +3,8 @@
 {% block content %}
 <h1>Create Task</h1>
 
+<p style='color: red; font-weight: bold;'>{{ error }}</p>
+
 <form action="/tasks/create" method='post'>
   {% csrf_token %}
   {{ form.as_div }}
