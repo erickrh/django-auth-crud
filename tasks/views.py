@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
@@ -42,6 +42,30 @@ def tasks(request):
   return render(request, 'tasks.html', {
     'tasks': tasks
   })
+
+# def task_detail(request, task_id):
+#   tasks = Task.objects.filter(id=task_id, user=request.user)
+#   error = 'Ohh, there is nothing here!'
+#   if tasks:
+#     return render(request, 'task_detail.html', {
+#       'tasks': tasks,
+#     })
+#   else:
+#     return render(request, 'task_detail.html', {
+#     'error': error
+#     })
+
+def task_detail(request, task_id):
+  try:
+    task = get_object_or_404(Task, pk=task_id, user=request.user)
+    return render(request, 'task_detail.html', {
+      'task': task,
+    })
+  except:
+    error = 'Ohh, there is nothing here!'
+    return render(request, 'task_detail.html', {
+      'error': error,
+    })
 
 def create_task(request):
   if request.method == 'GET':

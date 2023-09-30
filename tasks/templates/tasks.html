@@ -5,7 +5,7 @@
 
 {% for task in tasks %}
 <ul>
-  <li><b>{% if task.important %} * {% endif %} {{ task.title }}:</b> {{ task.description }}</li>
+  <li><b>{% if task.important %} * {% endif %} <a href="{% url 'task_detail' task.id %}">{{ task.title }}:</a></b> {{ task.description }}</li>
   <code>By: {{ task.user.username }}</code>
 </ul>
 {% endfor %}
