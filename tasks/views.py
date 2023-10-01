@@ -7,6 +7,7 @@ from django.http import HttpResponse
 from .forms import Task_form
 from .models import Task
 from django.utils import timezone
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 def home(request):
@@ -37,6 +38,7 @@ def signup(request):
           'error': 'Password does not match'
         })
 
+@login_required
 def tasks(request):
   # tasks = Task.objects.all()
   tasks = Task.objects.filter(user=request.user, datecompleted__isnull=True).order_by('-created')
@@ -45,7 +47,8 @@ def tasks(request):
     'tasks': tasks,
     'title': title
   })
-  
+
+@login_required
 def tasks_completed(request):
   tasks = Task.objects.filter(user=request.user, datecompleted__isnull=False).order_by('-datecompleted')
   title = 'Tasks Completed'
@@ -66,6 +69,7 @@ def tasks_completed(request):
 #     'error': error
 #     })
 
+@login_required
 def task_detail(request, task_id):
   if request.method == 'GET':
     try:
@@ -95,20 +99,23 @@ def task_detail(request, task_id):
         'form': form,
         'error': 'Error updating task'
       })
-      
+
+@login_required
 def complete_task(request, task_id):
   if request.method == 'POST':
     task = get_object_or_404(Task, id=task_id, user=request.user)
     task.datecompleted = timezone.now()
     task.save()
     return redirect('tasks')
-  
+
+@login_required
 def delete_task(request, task_id):
   if request.method == 'POST':
     task = get_object_or_404(Task, id=task_id, user=request.user)
     task.delete()
     return redirect('tasks')
-    
+
+@login_required
 def create_task(request):
   if request.method == 'GET':
     return render(request, 'create_task.html', {
@@ -128,6 +135,7 @@ def create_task(request):
       'error': 'Please provide valid data'
     })
 
+@login_required
 def sighout(request):
   logout(request)
   return redirect('home')
