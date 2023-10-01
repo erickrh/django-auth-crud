@@ -89,6 +89,12 @@ def complete_task(request, task_id):
     task.datecompleted = timezone.now()
     task.save()
     return redirect('tasks')
+  
+def delete_task(request, task_id):
+  if request.method == 'POST':
+    task = get_object_or_404(Task, id=task_id, user=request.user)
+    task.delete()
+    return redirect('tasks')
     
 def create_task(request):
   if request.method == 'GET':
