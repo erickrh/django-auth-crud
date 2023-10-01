@@ -6,6 +6,7 @@ from django.db import IntegrityError
 from django.http import HttpResponse
 from .forms import Task_form
 from .models import Task
+from django.utils import timezone
 
 # Create your views here.
 def home(request):
@@ -81,6 +82,13 @@ def task_detail(request, task_id):
         'form': form,
         'error': 'Error updating task'
       })
+      
+def complete_task(request, task_id):
+  if request.method == 'POST':
+    task = get_object_or_404(Task, id=task_id, user=request.user)
+    task.datecompleted = timezone.now()
+    task.save()
+    return redirect('tasks')
     
 def create_task(request):
   if request.method == 'GET':
