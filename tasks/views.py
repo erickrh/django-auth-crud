@@ -39,9 +39,19 @@ def signup(request):
 
 def tasks(request):
   # tasks = Task.objects.all()
-  tasks = Task.objects.filter(user=request.user, datecompleted__isnull=True)
+  tasks = Task.objects.filter(user=request.user, datecompleted__isnull=True).order_by('-created')
+  title = 'Tasks Pending'
   return render(request, 'tasks.html', {
-    'tasks': tasks
+    'tasks': tasks,
+    'title': title
+  })
+  
+def tasks_completed(request):
+  tasks = Task.objects.filter(user=request.user, datecompleted__isnull=False).order_by('-datecompleted')
+  title = 'Tasks Completed'
+  return render(request, 'tasks.html', {
+    'tasks': tasks,
+    'title': title
   })
 
 # def task_detail(request, task_id):
@@ -75,7 +85,10 @@ def task_detail(request, task_id):
       task = get_object_or_404(Task, pk=task_id, user=request.user)
       form = Task_form(request.POST, instance=task)
       form.save()
-      return redirect('tasks')
+      if task.datecompleted == None:
+        return redirect('tasks')
+      else:
+        return redirect('tasks_completed')
     except ValueError:
       return render(request, 'task_detail.html', {
         'task': task,
