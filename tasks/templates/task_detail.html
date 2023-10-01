@@ -3,6 +3,11 @@
 {% block content %}
   <p style='color: red; font-weight: bold;'>{{ error }}</p>
 
-  <h1>{{ task.title }}</h1>
-  <p>{{ task.description }}</p>
+  {# action="{% url 'task_detail' task.id %}" This could be the action #}
+  <form method='post'>
+    {% csrf_token %}
+    {{ form.as_div }}
+    <button>Update</button>
+  </form>
+
 {% endblock %}

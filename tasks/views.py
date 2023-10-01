@@ -56,17 +56,32 @@ def tasks(request):
 #     })
 
 def task_detail(request, task_id):
-  try:
-    task = get_object_or_404(Task, pk=task_id, user=request.user)
-    return render(request, 'task_detail.html', {
-      'task': task,
-    })
-  except:
-    error = 'Ohh, there is nothing here!'
-    return render(request, 'task_detail.html', {
-      'error': error,
-    })
-
+  if request.method == 'GET':
+    try:
+      task = get_object_or_404(Task, pk=task_id, user=request.user)
+      form = Task_form(instance=task)
+      return render(request, 'task_detail.html', {
+        'task': task,
+        'form': form
+      })
+    except:
+      error = 'Ohh, there is nothing here!'
+      return render(request, 'task_detail.html', {
+        'error': error,
+      })
+  else:
+    try:
+      task = get_object_or_404(Task, pk=task_id, user=request.user)
+      form = Task_form(request.POST, instance=task)
+      form.save()
+      return redirect('tasks')
+    except ValueError:
+      return render(request, 'task_detail.html', {
+        'task': task,
+        'form': form,
+        'error': 'Error updating task'
+      })
+    
 def create_task(request):
   if request.method == 'GET':
     return render(request, 'create_task.html', {
