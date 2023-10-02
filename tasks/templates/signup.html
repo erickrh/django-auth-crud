@@ -10,7 +10,19 @@
 
 <form action="/signup/" method='post'>
   {% csrf_token %}
-  {{ form.as_div }}
+  <!-- {{ form.as_div }} -->
+
+  <label for="username">Username:</label>
+  <input type="text" name='username' id='username'>
+  <br>
+  <br>
+  <label for="password1">Password:</label>
+  <input type="password" name='password1' id='password1'>
+  <br>
+  <br>
+  <label for="password2">Confirm your password:</label>
+  <input type="password" name='password2' id='password2'>
+  <br>
   <button type="submit">Sign up</button>
 </form>
 {% endblock %}
